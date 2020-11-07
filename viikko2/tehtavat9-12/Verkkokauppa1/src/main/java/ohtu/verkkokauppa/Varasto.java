@@ -4,27 +4,17 @@ import java.util.*;
 
 public class Varasto implements VarastoInterface {
 
-    private static Varasto instanssi;
-
-    public static Varasto getInstance() {
-        if (instanssi == null) {
-            instanssi = new Varasto();
-        }
-
-        return instanssi;
-    }
-
-    private Kirjanpito kirjanpito;
+    private KirjanpitoInterface kirjanpito;
     private HashMap<Tuote, Integer> saldot;
 
-    private Varasto() {
-        kirjanpito = Kirjanpito.getInstance();
+    public Varasto(KirjanpitoInterface kirjanpito) {
+        this.kirjanpito = kirjanpito;
         saldot = new HashMap<Tuote, Integer>();
         alustaTuotteet();
     }
 
     @Override
-    public Tuote haeTuote(int id){
+    public Tuote haeTuote(int id) {
         for (Tuote t : saldot.keySet()) {
             if ( t.getId()==id) return t;
         }
@@ -33,18 +23,18 @@ public class Varasto implements VarastoInterface {
     }
 
     @Override
-    public int saldo(int id){
+    public int saldo(int id) {
         return saldot.get(haeTuote(id));
     }
 
     @Override
-    public void otaVarastosta(Tuote t){
+    public void otaVarastosta(Tuote t) {
         saldot.put(t,  saldo(t.getId())-1 );
         kirjanpito.lisaaTapahtuma("otettiin varastosta "+t);
     }
 
     @Override
-    public void palautaVarastoon(Tuote t){
+    public void palautaVarastoon(Tuote t) {
         saldot.put(t,  saldo(t.getId())+1 );
         kirjanpito.lisaaTapahtuma("palautettiin varastoon "+t);
     }
