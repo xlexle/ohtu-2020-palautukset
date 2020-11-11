@@ -15,10 +15,11 @@ public class Main {
         Player[] players = mapper.fromJson(bodyText, Player[].class);
 
         System.out.println("Players from FIN" + new Date());
-        System.out.println("\nname, team, goals, assists");
+        System.out.println("\nname, team, goals, assists, points");
 
         Arrays.stream(players)
             .filter(it -> it.getNationality().equals("FIN"))
+            .sorted()
             .forEach(System.out::println);
     }
 
