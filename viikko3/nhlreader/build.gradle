@@ -3,6 +3,15 @@ plugins {
     id 'application'
 }
 
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.apache.httpcomponents:fluent-hc:4.5.13'
+    compile 'com.google.code.gson:gson:2.8.6'
+}
+
 mainClassName = 'ohtu.Main'
 /* joudumme tässä tehtävässä käyttämään vanhaa tapaa mainClassin määrittelyyn sillä
 tehtävässä käytettävä shadowJar-plugin ei osaa uudempaa syntaksia
