@@ -38,8 +38,15 @@ public class Stepdefs {
        io = new StubIO(inputLines); 
        app = new App(io, auth);
        app.run();
-    }    
-    
+    }
+
+    @When("user {string} with password {string} is created")
+    public void userIsCreated(String username, String password) {
+        inputLines.add("new");
+        inputLines.add(username);
+        inputLines.add(password);
+    }
+
     @Then("system will respond with {string}")
     public void systemWillRespondWith(String expectedOutput) {
         assertTrue(io.getPrints().contains(expectedOutput));
