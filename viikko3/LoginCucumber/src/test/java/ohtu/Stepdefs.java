@@ -24,10 +24,10 @@ public class Stepdefs {
         auth = new AuthenticationService(userDao);
         inputLines = new ArrayList<>();      
     }
-    
-    @Given("^command login is selected$")
-    public void commandLoginSelected() throws Throwable {
-        inputLines.add("login");
+
+    @Given("command {string} is selected")
+    public void commandIsSelected(String command) throws Throwable {
+        inputLines.add(command);
     }
 
     @When("username {string} and password {string} are entered")
