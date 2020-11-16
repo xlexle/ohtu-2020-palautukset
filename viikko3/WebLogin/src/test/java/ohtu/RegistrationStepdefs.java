@@ -18,9 +18,7 @@ public class RegistrationStepdefs {
 
     @Given("register new user is selected")
     public void registerNewUserIsSelected() {
-        driver.get(baseUrl);
-        WebElement element = driver.findElement(By.linkText("register new user"));
-        element.click();
+        goToRegisterNewUserPage();
     }
 
     @When("valid username {string}, valid password {string} and matching password confirmation are entered")
@@ -53,6 +51,20 @@ public class RegistrationStepdefs {
         pageHasContent(error);
     }
 
+    @Given("user with username {string} and password {string} is successfully created")
+    public void userWithUsernameAndPasswordIsSuccessfullyCreated(String username, String password) {
+        goToRegisterNewUserPage();
+        registerWith(username, password, password);
+        pageHasContent("Welcome to Ohtu Application!");
+    }
+
+    @Given("user with username {string} and password {string} is tried to be created")
+    public void userWithUsernameAndPasswordIsTriedToBeCreated(String username, String password) {
+        goToRegisterNewUserPage();
+        registerWith(username, password, password);
+        pageHasSomeError();
+    }
+
     @After
     public void tearDown(){
         driver.quit();
@@ -62,6 +74,17 @@ public class RegistrationStepdefs {
 
     private void pageHasContent(String content) {
         assertTrue(driver.getPageSource().contains(content));
+    }
+
+    private void pageHasSomeError() {
+        String error = driver.findElement(By.xpath("//div[@id='error']/p/em")).getText();
+        assertFalse(error.isEmpty());
+    }
+
+    private void goToRegisterNewUserPage() {
+        driver.get(baseUrl);
+        WebElement element = driver.findElement(By.linkText("register new user"));
+        element.click();
     }
 
     private void registerWith(String username, String password, String confirmation) {
