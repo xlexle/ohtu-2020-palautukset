@@ -11,7 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
-public class Stepdefs {
+public class LoginStepdefs {
     //WebDriver driver = new ChromeDriver();
     WebDriver driver = new HtmlUnitDriver();
     String baseUrl = "http://localhost:4567";
