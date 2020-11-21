@@ -37,14 +37,7 @@ public class KauppaTest {
     public void yhdenTuotteenOstoksenPaaytyttyaPankinMetodiaTilisiirtoKutsutaanOikein() {
         kauppa.lisaaKoriin(maito.getId());
         kauppa.tilimaksu(nimi, tilinumero);
-
-        verify(pankki).tilisiirto(
-            eq(nimi),
-            eq(viitenro),
-            eq(tilinumero),
-            eq(kaupanTili),
-            eq(maito.getHinta())
-        );
+        verifioiTilisiirto(maito.getHinta());
     }
 
     @Test
@@ -52,14 +45,7 @@ public class KauppaTest {
         kauppa.lisaaKoriin(maito.getId());
         kauppa.lisaaKoriin(leipa.getId());
         kauppa.tilimaksu(nimi, tilinumero);
-
-        verify(pankki).tilisiirto(
-            eq(nimi),
-            eq(viitenro),
-            eq(tilinumero),
-            eq(kaupanTili),
-            eq(maito.getHinta() + leipa.getHinta())
-        );
+        verifioiTilisiirto(maito.getHinta() + leipa.getHinta());
     }
 
     @Test
@@ -67,14 +53,7 @@ public class KauppaTest {
         kauppa.lisaaKoriin(maito.getId());
         kauppa.lisaaKoriin(maito.getId());
         kauppa.tilimaksu(nimi, tilinumero);
-
-        verify(pankki).tilisiirto(
-            eq(nimi),
-            eq(viitenro),
-            eq(tilinumero),
-            eq(kaupanTili),
-            eq(2 * maito.getHinta())
-        );
+        verifioiTilisiirto(2 * maito.getHinta());
     }
 
     @Test
@@ -82,14 +61,16 @@ public class KauppaTest {
         kauppa.lisaaKoriin(maito.getId());
         kauppa.lisaaKoriin(kaviaari.getId());
         kauppa.tilimaksu(nimi, tilinumero);
+        verifioiTilisiirto(maito.getHinta());
+    }
 
+    private void verifioiTilisiirto(int summa) {
         verify(pankki).tilisiirto(
             eq(nimi),
             eq(viitenro),
             eq(tilinumero),
             eq(kaupanTili),
-            eq(maito.getHinta())
+            eq(summa)
         );
     }
-
 }
