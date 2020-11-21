@@ -9,6 +9,11 @@ public class Kassapaate {
     }
 
     public void lataa(Maksukortti kortti, int summa){
+        if (summa < 0) {
+            System.out.println("Kortille ei voi ladata negatiivista summaa.");
+            return; // TODO throw custom exception instead of printing and returning
+        }
+
         kortti.lataa(summa);
     }
 
