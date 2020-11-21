@@ -6,27 +6,34 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class KauppaTest {
+    private Pankki pankki = mock(Pankki.class);
+    private Kauppa kauppa;
     private int viitenro = 42;
     private String nimi = "pekka";
     private String tilinumero = "12345";
     private Tuote maito = new Tuote(1, "maito", 5);
+    private Tuote leipa = new Tuote(2, "leipä", 2);
     private String kaupanTili = "33333-44455"; // kovakoodattu Kauppa-luokassa
 
-    @Test
-    public void yhdenTuotteenOstoksenPaaytyttyaPankinMetodiaTilisiirtoKutsutaanOikein() {
-        Pankki pankki = mock(Pankki.class);
-
+    @Before
+    public void setUpKauppa() {
         Viitegeneraattori viite = mock(Viitegeneraattori.class);
         when(viite.uusi()).thenReturn(viitenro);
 
         Varasto varasto = mock(Varasto.class);
-        when(varasto.saldo(1)).thenReturn(10);
-        when(varasto.haeTuote(1)).thenReturn(maito);
+        when(varasto.saldo(maito.getId())).thenReturn(10);
+        when(varasto.saldo(leipa.getId())).thenReturn(10);
+        when(varasto.haeTuote(maito.getId())).thenReturn(maito);
+        when(varasto.haeTuote(leipa.getId())).thenReturn(leipa);
 
-        Kauppa k = new Kauppa(varasto, pankki, viite);
-        k.aloitaAsiointi();
-        k.lisaaKoriin(1); // maito id
-        k.tilimaksu(nimi, tilinumero);
+        kauppa = new Kauppa(varasto, pankki, viite);
+        kauppa.aloitaAsiointi();
+    }
+
+    @Test
+    public void yhdenTuotteenOstoksenPaaytyttyaPankinMetodiaTilisiirtoKutsutaanOikein() {
+        kauppa.lisaaKoriin(maito.getId());
+        kauppa.tilimaksu(nimi, tilinumero);
 
         verify(pankki).tilisiirto(
             eq(nimi),
@@ -34,6 +41,36 @@ public class KauppaTest {
             eq(tilinumero),
             eq(kaupanTili),
             eq(maito.getHinta())
+        );
+    }
+
+    @Test
+    public void kahdenEriTuotteenOstoksenPaaytyttyaPankinMetodiaTilisiirtoKutsutaanOikein() {
+        kauppa.lisaaKoriin(maito.getId());
+        kauppa.lisaaKoriin(leipa.getId());
+        kauppa.tilimaksu(nimi, tilinumero);
+
+        verify(pankki).tilisiirto(
+            eq(nimi),
+            eq(viitenro),
+            eq(tilinumero),
+            eq(kaupanTili),
+            eq(maito.getHinta() + leipa.getHinta())
+        );
+    }
+
+    @Test
+    public void kahdenSamanTuotteenOstoksenPaaytyttyaPankinMetodiaTilisiirtoKutsutaanOikein() {
+        kauppa.lisaaKoriin(maito.getId());
+        kauppa.lisaaKoriin(maito.getId());
+        kauppa.tilimaksu(nimi, tilinumero);
+
+        verify(pankki).tilisiirto(
+            eq(nimi),
+            eq(viitenro),
+            eq(tilinumero),
+            eq(kaupanTili),
+            eq(2 * maito.getHinta())
         );
     }
 
