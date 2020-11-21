@@ -13,6 +13,7 @@ public class KauppaTest {
     private String tilinumero = "12345";
     private Tuote maito = new Tuote(1, "maito", 5);
     private Tuote leipa = new Tuote(2, "leipä", 2);
+    private Tuote kaviaari = new Tuote(3, "kaviaari", 99);
     private String kaupanTili = "33333-44455"; // kovakoodattu Kauppa-luokassa
 
     @Before
@@ -23,8 +24,10 @@ public class KauppaTest {
         Varasto varasto = mock(Varasto.class);
         when(varasto.saldo(maito.getId())).thenReturn(10);
         when(varasto.saldo(leipa.getId())).thenReturn(10);
+        when(varasto.saldo(kaviaari.getId())).thenReturn(0);
         when(varasto.haeTuote(maito.getId())).thenReturn(maito);
         when(varasto.haeTuote(leipa.getId())).thenReturn(leipa);
+        when(varasto.haeTuote(kaviaari.getId())).thenReturn(kaviaari);
 
         kauppa = new Kauppa(varasto, pankki, viite);
         kauppa.aloitaAsiointi();
@@ -71,6 +74,21 @@ public class KauppaTest {
             eq(tilinumero),
             eq(kaupanTili),
             eq(2 * maito.getHinta())
+        );
+    }
+
+    @Test
+    public void toisenTuotteenOllessaLoppuKahdenTuotteenOstoksenPaaytyttyaPankinMetodiaTilisiirtoKutsutaanOikein() {
+        kauppa.lisaaKoriin(maito.getId());
+        kauppa.lisaaKoriin(kaviaari.getId());
+        kauppa.tilimaksu(nimi, tilinumero);
+
+        verify(pankki).tilisiirto(
+            eq(nimi),
+            eq(viitenro),
+            eq(tilinumero),
+            eq(kaupanTili),
+            eq(maito.getHinta())
         );
     }
 
