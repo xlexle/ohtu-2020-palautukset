@@ -90,20 +90,14 @@ public class IntJoukko {
 
     @Override
     public String toString() {
-        if (alkioidenLkm == 0) {
-            return "{}";
-        } else if (alkioidenLkm == 1) {
-            return "{" + ljono[0] + "}";
-        } else {
-            String tuotos = "{";
+        String alkiotMerkkijono = "";
+        if (alkioidenLkm > 0) {
             for (int i = 0; i < alkioidenLkm - 1; i++) {
-                tuotos += ljono[i];
-                tuotos += ", ";
+                alkiotMerkkijono += ljono[i] + ", ";
             }
-            tuotos += ljono[alkioidenLkm - 1];
-            tuotos += "}";
-            return tuotos;
+            alkiotMerkkijono += ljono[alkioidenLkm - 1];
         }
+        return "{" + alkiotMerkkijono + "}";
     }
 
     public int[] toIntArray() {
