@@ -64,6 +64,18 @@ public class KauppaTest {
         verifioiTilisiirto(maito.getHinta());
     }
 
+    @Test
+    public void aloitaAsiointiNollaaEdellisenOstoksenTiedot() {
+        kauppa.lisaaKoriin(maito.getId());
+        kauppa.tilimaksu(nimi, tilinumero);
+        verifioiTilisiirto(maito.getHinta());
+
+        kauppa.aloitaAsiointi();
+        kauppa.lisaaKoriin(leipa.getId());
+        kauppa.tilimaksu(nimi, tilinumero);
+        verifioiTilisiirto(leipa.getHinta());
+    }
+
     private void verifioiTilisiirto(int summa) {
         verify(pankki).tilisiirto(
             eq(nimi),
