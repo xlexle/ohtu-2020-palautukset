@@ -70,6 +70,16 @@ public class KauppaTest {
     }
 
     @Test
+    public void tuotteenPoistoKoristaVahentaaTuotteenHinnanOstoksesta() {
+        kauppa.lisaaKoriin(maito.getId());
+        kauppa.lisaaKoriin(leipa.getId());
+        kauppa.poistaKorista(maito.getId());
+
+        kauppa.tilimaksu(nimi, tilinumero);
+        verifioiTilisiirtoSummalla(leipa.getHinta());
+    }
+
+    @Test
     public void aloitaAsiointiNollaaEdellisenOstoksenTiedot() {
         kauppa.lisaaKoriin(maito.getId());
         kauppa.tilimaksu(nimi, tilinumero);
