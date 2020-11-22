@@ -109,42 +109,14 @@ public class IntJoukko {
     }
 
     public static IntJoukko yhdiste(IntJoukko a, IntJoukko b) {
-        IntJoukko tulos = new IntJoukko();
-        int[] aTaulu = a.toIntArray();
-        int[] bTaulu = b.toIntArray();
-        for (int i = 0; i < aTaulu.length; i++) {
-            tulos.lisaa(aTaulu[i]);
-        }
-        for (int i = 0; i < bTaulu.length; i++) {
-            tulos.lisaa(bTaulu[i]);
-        }
-        return tulos;
+        return new JoukkoOperaattori(a, b).yhdiste();
     }
 
     public static IntJoukko leikkaus(IntJoukko a, IntJoukko b) {
-        IntJoukko tulos = new IntJoukko();
-        int[] aTaulu = a.toIntArray();
-        int[] bTaulu = b.toIntArray();
-        for (int i = 0; i < aTaulu.length; i++) {
-            for (int j = 0; j < bTaulu.length; j++) {
-                if (aTaulu[i] == bTaulu[j]) {
-                    tulos.lisaa(bTaulu[j]);
-                }
-            }
-        }
-        return tulos;
+        return new JoukkoOperaattori(a, b).leikkaus();
     }
 
     public static IntJoukko erotus (IntJoukko a, IntJoukko b) {
-        IntJoukko tulos = new IntJoukko();
-        int[] aTaulu = a.toIntArray();
-        int[] bTaulu = b.toIntArray();
-        for (int i = 0; i < aTaulu.length; i++) {
-            tulos.lisaa(aTaulu[i]);
-        }
-        for (int i = 0; i < bTaulu.length; i++) {
-            tulos.poista(bTaulu[i]);
-        }
-        return tulos;
+        return new JoukkoOperaattori(a, b).erotus();
     }
 }
