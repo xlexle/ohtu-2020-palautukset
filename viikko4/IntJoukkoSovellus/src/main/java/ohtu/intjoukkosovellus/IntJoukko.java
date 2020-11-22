@@ -56,40 +56,33 @@ public class IntJoukko {
         return false;
     }
 
-    public boolean kuuluu(int luku) {
-        int on = 0;
+    private int indeksi(int luku) {
         for (int i = 0; i < alkioidenLkm; i++) {
             if (luku == ljono[i]) {
-                on++;
+                return i;
             }
         }
-        if (on > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return -1;
+    }
+
+    public boolean kuuluu(int luku) {
+        return indeksi(luku) != -1;
     }
 
     public boolean poista(int luku) {
-        int kohta = -1;
-        int apu;
-        for (int i = 0; i < alkioidenLkm; i++) {
-            if (luku == ljono[i]) {
-                kohta = i; //siis luku löytyy tuosta kohdasta :D
-                ljono[kohta] = 0;
-                break;
-            }
+        int luvunIndeksi = indeksi(luku);
+        if (luvunIndeksi == -1) {
+            return false;
         }
-        if (kohta != -1) {
-            for (int j = kohta; j < alkioidenLkm - 1; j++) {
-                apu = ljono[j];
-                ljono[j] = ljono[j + 1];
-                ljono[j + 1] = apu;
-            }
-            alkioidenLkm--;
-            return true;
+
+        int lukuNyt;
+        for (int j = luvunIndeksi; j < alkioidenLkm - 1; j++) {
+            lukuNyt = ljono[j];
+            ljono[j] = ljono[j + 1];
+            ljono[j + 1] = lukuNyt;
         }
-        return false;
+        alkioidenLkm--;
+        return true;
     }
 
     private void kopioiTaulukko(int[] vanha, int[] uusi) {
