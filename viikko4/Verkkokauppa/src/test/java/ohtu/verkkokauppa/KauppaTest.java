@@ -8,7 +8,9 @@ import static org.mockito.Mockito.*;
 public class KauppaTest {
     private Pankki pankki = mock(Pankki.class);
     private Kauppa kauppa;
-    private int viitenro = 42;
+    private int viitenro1 = 42;
+    private int viitenro2 = 43;
+    private int viitenro3 = 44;
     private String nimi = "pekka";
     private String tilinumero = "12345";
     private Tuote maito = new Tuote(1, "maito", 5);
@@ -19,7 +21,10 @@ public class KauppaTest {
     @Before
     public void setUpKauppa() {
         Viitegeneraattori viite = mock(Viitegeneraattori.class);
-        when(viite.uusi()).thenReturn(viitenro);
+        when(viite.uusi())
+            .thenReturn(viitenro1)
+            .thenReturn(viitenro2)
+            .thenReturn(viitenro3);
 
         Varasto varasto = mock(Varasto.class);
         when(varasto.saldo(maito.getId())).thenReturn(10);
@@ -37,7 +42,7 @@ public class KauppaTest {
     public void yhdenTuotteenOstoksenPaaytyttyaPankinMetodiaTilisiirtoKutsutaanOikein() {
         kauppa.lisaaKoriin(maito.getId());
         kauppa.tilimaksu(nimi, tilinumero);
-        verifioiTilisiirto(maito.getHinta());
+        verifioiTilisiirtoSummalla(maito.getHinta());
     }
 
     @Test
@@ -45,7 +50,7 @@ public class KauppaTest {
         kauppa.lisaaKoriin(maito.getId());
         kauppa.lisaaKoriin(leipa.getId());
         kauppa.tilimaksu(nimi, tilinumero);
-        verifioiTilisiirto(maito.getHinta() + leipa.getHinta());
+        verifioiTilisiirtoSummalla(maito.getHinta() + leipa.getHinta());
     }
 
     @Test
@@ -53,7 +58,7 @@ public class KauppaTest {
         kauppa.lisaaKoriin(maito.getId());
         kauppa.lisaaKoriin(maito.getId());
         kauppa.tilimaksu(nimi, tilinumero);
-        verifioiTilisiirto(2 * maito.getHinta());
+        verifioiTilisiirtoSummalla(2 * maito.getHinta());
     }
 
     @Test
@@ -61,25 +66,46 @@ public class KauppaTest {
         kauppa.lisaaKoriin(maito.getId());
         kauppa.lisaaKoriin(kaviaari.getId());
         kauppa.tilimaksu(nimi, tilinumero);
-        verifioiTilisiirto(maito.getHinta());
+        verifioiTilisiirtoSummalla(maito.getHinta());
     }
 
     @Test
     public void aloitaAsiointiNollaaEdellisenOstoksenTiedot() {
         kauppa.lisaaKoriin(maito.getId());
         kauppa.tilimaksu(nimi, tilinumero);
-        verifioiTilisiirto(maito.getHinta());
+        verifioiTilisiirtoSummalla(maito.getHinta());
 
         kauppa.aloitaAsiointi();
         kauppa.lisaaKoriin(leipa.getId());
         kauppa.tilimaksu(nimi, tilinumero);
-        verifioiTilisiirto(leipa.getHinta());
+        verifioiTilisiirtoSummalla(leipa.getHinta());
     }
 
-    private void verifioiTilisiirto(int summa) {
+    @Test
+    public void kauppaPyytaaUudelleMaksutapahtumalleUudenViitteen() {
+        kauppa.lisaaKoriin(maito.getId());
+        kauppa.tilimaksu(nimi, tilinumero);
+        verifioiTilisiirtoViitenumerolla(viitenro1);
+        kauppa.tilimaksu(nimi, tilinumero);
+        verifioiTilisiirtoViitenumerolla(viitenro2);
+        kauppa.tilimaksu(nimi, tilinumero);
+        verifioiTilisiirtoViitenumerolla(viitenro3);
+    }
+
+    private void verifioiTilisiirtoViitenumerolla(int viitenro) {
         verify(pankki).tilisiirto(
             eq(nimi),
             eq(viitenro),
+            eq(tilinumero),
+            eq(kaupanTili),
+            anyInt()
+        );
+    }
+
+    private void verifioiTilisiirtoSummalla(int summa) {
+        verify(pankki).tilisiirto(
+            eq(nimi),
+            anyInt(),
             eq(tilinumero),
             eq(kaupanTili),
             eq(summa)
