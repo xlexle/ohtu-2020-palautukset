@@ -34,26 +34,25 @@ public class IntJoukko {
     }
 
     public boolean lisaa(int luku) {
-        int eiOle = 0;
-        if (alkioidenLkm == 0) {
-            ljono[0] = luku;
-            alkioidenLkm++;
-            return true;
-        } else {
+        if (kuuluu(luku)) {
+            return false;
         }
-        if (!kuuluu(luku)) {
-            ljono[alkioidenLkm] = luku;
-            alkioidenLkm++;
-            if (alkioidenLkm % ljono.length == 0) {
-                int[] taulukkoOld = new int[ljono.length];
-                taulukkoOld = ljono;
-                kopioiTaulukko(ljono, taulukkoOld);
-                ljono = new int[alkioidenLkm + kasvatuskoko];
-                kopioiTaulukko(taulukkoOld, ljono);
-            }
-            return true;
+
+        ljono[alkioidenLkm] = luku;
+        alkioidenLkm++;
+
+        if (alkioidenLkm == ljono.length) {
+            kasvataKapasiteettia();
         }
-        return false;
+        return true;
+    }
+
+    private void kasvataKapasiteettia() {
+        int[] taulukkoOld = ljono;
+        ljono = new int[ljono.length + kasvatuskoko];
+        for (int i = 0; i < taulukkoOld.length; i++) {
+            ljono[i] = taulukkoOld[i];
+        }
     }
 
     private int indeksi(int luku) {
@@ -83,12 +82,6 @@ public class IntJoukko {
         }
         alkioidenLkm--;
         return true;
-    }
-
-    private void kopioiTaulukko(int[] vanha, int[] uusi) {
-        for (int i = 0; i < vanha.length; i++) {
-            uusi[i] = vanha[i];
-        }
     }
 
     public int mahtavuus() {
