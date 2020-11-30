@@ -7,6 +7,7 @@ public abstract class Komento {
     protected TextField syotekentta;
     protected Button undo;
     protected Sovelluslogiikka sovellus;
+    protected int edellinenTulos;
 
     public Komento(TextField syotekentta, Button undo, Sovelluslogiikka sovellus) {
         this.syotekentta = syotekentta;

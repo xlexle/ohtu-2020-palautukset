@@ -10,19 +10,21 @@ public class Erotus extends Komento {
 
     @Override
     public void suorita() {
+        edellinenTulos = sovellus.tulos();
         sovellus.miinus(arvo());
     };
 
     @Override
     public void peru() {
-        System.out.println("undo pressed");
+        sovellus.setTulos(edellinenTulos);
     };
 
     private int arvo() {
         try {
             return Integer.parseInt(syotekentta.getText());
         } catch (Exception e) {
-            return 0;
+            System.out.println(e);
+            throw e;
         }
     }
 }

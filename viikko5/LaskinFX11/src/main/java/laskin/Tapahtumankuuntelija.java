@@ -34,8 +34,11 @@ public class Tapahtumankuuntelija implements EventHandler {
     public void handle(Event event) {
         if (event.getTarget() != undo) {
             Komento komento = this.komennot.get((Button) event.getTarget());
-            komento.suorita();
-            edellinen = komento;
+            try {
+                komento.suorita();
+                edellinen = komento;
+            } catch (Exception e) {
+            }
         } else {
             edellinen.peru();
             edellinen = null;
@@ -49,6 +52,6 @@ public class Tapahtumankuuntelija implements EventHandler {
         tuloskentta.setText("" + laskunTulos);
         syotekentta.setText("");
         nollaa.disableProperty().set(laskunTulos == 0);
-        undo.disableProperty().set(false);
+        undo.disableProperty().set(edellinen == null);
     }
 }

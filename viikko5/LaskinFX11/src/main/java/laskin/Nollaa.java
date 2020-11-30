@@ -9,11 +9,12 @@ public class Nollaa extends Komento {
 
     @Override
     public void suorita() {
+        edellinenTulos = sovellus.tulos();
         sovellus.nollaa();
     };
 
     @Override
     public void peru() {
-        System.out.println("undo pressed");
+        sovellus.setTulos(edellinenTulos);
     };
 }
