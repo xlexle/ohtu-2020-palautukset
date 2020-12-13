@@ -18,19 +18,20 @@ public class Paaohjelma {
             String vastaus = scanner.nextLine();
             if (vastaus.endsWith("a")) {
                 System.out.println("peli loppuu kun pelaaja antaa virheellisen siirron eli jonkun muun kuin k, p tai s");
-                KPSPelaajaVsPelaaja kaksinpeli = new KPSPelaajaVsPelaaja();
+                KPS kaksinpeli = new KPSNormaali(new Ihminen("Pelaaja1"), new Ihminen("Pelaaja2"));
                 kaksinpeli.pelaa();
             } else if (vastaus.endsWith("b")) {
                 System.out.println("peli loppuu kun pelaaja antaa virheellisen siirron eli jonkun muun kuin k, p tai s");
-                KPSTekoaly yksinpeli = new KPSTekoaly();
+                KPS yksinpeli = new KPSNormaali(new Ihminen("Pelaaja1"), new Tekoaly());
                 yksinpeli.pelaa();
             } else if (vastaus.endsWith("c")) {
                 System.out.println("peli loppuu kun pelaaja antaa virheellisen siirron eli jonkun muun kuin k, p tai s");
-                KPSParempiTekoaly pahaYksinpeli = new KPSParempiTekoaly();
+                KPS pahaYksinpeli = new KPSPahaYksinpeli(new Ihminen("Pelaaja1"), new TekoalyParannettu(20));
                 pahaYksinpeli.pelaa();
             } else {
                 break;
             }
+
 
         }
 

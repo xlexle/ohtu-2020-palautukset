@@ -3,7 +3,7 @@ package ohtu.kivipaperisakset;
 
 // "Muistava tekoäly"
 
-public class TekoalyParannettu {
+public class TekoalyParannettu implements Pelaava {
     private String[] muisti;
     private int vapaaMuistiIndeksi;
 
@@ -12,7 +12,8 @@ public class TekoalyParannettu {
         vapaaMuistiIndeksi = 0;
     }
 
-    public void asetaSiirto(String siirto) {
+    @Override
+    public void muistaSiirto(String siirto) {
         // jos muisti täyttyy, unohdetaan viimeinen alkio
         if (vapaaMuistiIndeksi == muisti.length) {
             for (int i = 1; i < muisti.length; i++) {
@@ -26,7 +27,14 @@ public class TekoalyParannettu {
         vapaaMuistiIndeksi++;
     }
 
+    @Override
     public String annaSiirto() {
+        String siirto = laskeSiirto();
+        System.out.println("Tietokone valitsi: " + siirto);
+        return siirto;
+    }
+
+    private String laskeSiirto() {
         if (vapaaMuistiIndeksi == 0 || vapaaMuistiIndeksi == 1) {
             return "k";
         }

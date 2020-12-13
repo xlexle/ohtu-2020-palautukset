@@ -1,27 +1,25 @@
 package ohtu.kivipaperisakset;
 
-public class Tekoaly {
-
-    int siirto;
+public class Tekoaly implements Pelaava {
+    int siirtoLkm;
 
     public Tekoaly() {
-        siirto = 0;
+        siirtoLkm = 0;
     }
 
+    @Override
     public String annaSiirto() {
-        siirto++;
-        siirto = siirto % 3;
+        siirtoLkm++;
+        siirtoLkm = siirtoLkm % 3;
 
-        if (siirto == 0) {
-            return "k";
-        } else if (siirto == 1) {
-            return "p";
-        } else {
-            return "s";
+        String siirto = "s";
+        if (siirtoLkm == 0) {
+            siirto = "k";
+        } else if (siirtoLkm == 1) {
+            siirto = "p";
         }
-    }
 
-    void asetaSiirto(String ekanSiirto) {
-        // ei tehdä mitään
+        System.out.println("Tietokone valitsi: " + siirto);
+        return siirto;
     }
 }
