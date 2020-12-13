@@ -42,6 +42,6 @@ public abstract class KPS {
     abstract protected void jatka();
 
     private static boolean onkoOkSiirto(String siirto) {
-        return siirto.isBlank() || ("k".equals(siirto) || "p".equals(siirto) || "s".equals(siirto));
+        return "k".equals(siirto) || "p".equals(siirto) || "s".equals(siirto);
     }
 }

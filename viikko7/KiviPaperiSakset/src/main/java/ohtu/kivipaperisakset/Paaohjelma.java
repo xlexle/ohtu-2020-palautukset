@@ -16,21 +16,16 @@ public class Paaohjelma {
                     + "\nmuilla valinnoilla lopetataan");
 
             String vastaus = scanner.nextLine();
+            System.out.println("peli loppuu kun pelaaja antaa virheellisen siirron eli jonkun muun kuin k, p tai s");
             if (vastaus.endsWith("a")) {
-                System.out.println("peli loppuu kun pelaaja antaa virheellisen siirron eli jonkun muun kuin k, p tai s");
                 KPS.Kaksinpeli().pelaa();
             } else if (vastaus.endsWith("b")) {
-                System.out.println("peli loppuu kun pelaaja antaa virheellisen siirron eli jonkun muun kuin k, p tai s");
                 KPS.Yksinpeli().pelaa();
             } else if (vastaus.endsWith("c")) {
-                System.out.println("peli loppuu kun pelaaja antaa virheellisen siirron eli jonkun muun kuin k, p tai s");
                 KPS.PahaYksinpeli().pelaa();
             } else {
                 break;
             }
-
-
         }
-
     }
 }
