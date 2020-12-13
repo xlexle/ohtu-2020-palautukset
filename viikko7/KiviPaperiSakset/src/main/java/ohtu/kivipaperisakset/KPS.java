@@ -7,7 +7,19 @@ public abstract class KPS {
     protected Pelaava eka;
     protected Pelaava toka;
 
-    public KPS(Pelaava eka, Pelaava toka) {
+    public static KPS Kaksinpeli() {
+        return new KPSNormaali(new Ihminen("Pelaaja1"), new Ihminen("Pelaaja2"));
+    }
+
+    public static KPS Yksinpeli() {
+        return new KPSNormaali(new Ihminen("Pelaaja1"), new Tekoaly());
+    }
+
+    public static KPS PahaYksinpeli() {
+        return new KPSPahaYksinpeli(new Ihminen("Pelaaja1"), new TekoalyParannettu(20));
+    }
+
+    protected KPS(Pelaava eka, Pelaava toka) {
         this.eka = eka;
         this.toka = toka;
     }
